@@ -1,36 +1,39 @@
 /* ============================================================
-   APP.JS — LOPULLINEN VERSIO
+   APP.JS — YKSINKERTAINEN & MODERNI VERSIO
    ✔ Kartta + lähin ravintola
    ✔ Filtterit (kaupunki, company)
-   ✔ USEITA suosikkiravintoloita (tähti per ravintola)
-   ✔ Pääsuosikki synkassa backendin kanssa
-   ✔ Ruokalistat (päivä / viikko)
+   ✔ Useita suosikkeja (⭐ localStorage)
+   ✔ Klikkaus listasta tai kartalta → ruokalista vasemmassa sarakkeessa
+   ✔ Päivä / viikko -valinta kiinni ruokalistassa
+   ✔ Profiili-avatar headerissa
 =============================================================== */
+
+const API_ROOT = "https://media2.edu.metropolia.fi/restaurant";
+const API_BASE_URL = `${API_ROOT}/api/v1`;
+const MENU_LANGUAGE = "fi";
 
 // Kartta
 let map;
 let markers = [];
 
-// API
-const API_BASE_URL = "https://media2.edu.metropolia.fi/restaurant/api/v1";
-const MENU_LANGUAGE = "fi";
-
 // DOM
 const restaurantListEl = document.getElementById("restaurant-list");
-const menuContentEl = document.getElementById("menu-content");
-const menuTypeInputs = document.querySelectorAll('input[name="menu-type"]');
-
 const filterCityEl = document.getElementById("filter-city");
 const filterCompanyEl = document.getElementById("filter-company");
 
 const userNameEl = document.getElementById("user-name");
 const logoutButton = document.getElementById("logout-button");
+const headerAvatarEl = document.getElementById("header-avatar");
+
+const menuRestaurantTitleEl = document.getElementById("menu-restaurant-title");
+const menuContentEl = document.getElementById("menu-content");
+const menuTypeInputs = document.querySelectorAll('input[name="menu-type"]');
 
 let selectedRestaurantId = null;
 let selectedMenuType = "day";
 
 let allRestaurants = [];
-let favouriteRestaurantIds = []; // monta suosikkia
+let favouriteRestaurantIds = [];
 
 // -----------------------
 // Alustus
@@ -48,7 +51,17 @@ document.addEventListener("DOMContentLoaded", () => {
     const user = JSON.parse(userJson);
     userNameEl.textContent = user.username || "Käyttäjä";
 
-    // Lue suosikit localStoragesta
+    // Header-avatar
+    if (user.avatar) {
+      headerAvatarEl.style.backgroundImage = `url(${API_ROOT}/uploads/${user.avatar})`;
+      headerAvatarEl.textContent = "";
+    } else if (user.username) {
+      headerAvatarEl.textContent = user.username[0].toUpperCase();
+    } else {
+      headerAvatarEl.textContent = "👤";
+    }
+
+    // Suosikit localStoragesta
     try {
       favouriteRestaurantIds = JSON.parse(
         localStorage.getItem("favouriteRestaurants") || "[]"
@@ -57,7 +70,7 @@ document.addEventListener("DOMContentLoaded", () => {
       favouriteRestaurantIds = [];
     }
 
-    // Jos backendissä on yksi suosikki, lisää se listaan jos puuttuu
+    // Yksi pääsuosikki back-endissä -> lisätään listaan jos puuttuu
     if (
       user.favouriteRestaurant &&
       !favouriteRestaurantIds.includes(user.favouriteRestaurant)
@@ -76,6 +89,7 @@ document.addEventListener("DOMContentLoaded", () => {
     window.location.href = "login.html";
   };
 
+  // Päivä / viikko -valinta
   menuTypeInputs.forEach((input) => {
     input.addEventListener("change", () => {
       selectedMenuType = input.value;
@@ -122,6 +136,11 @@ function addRestaurantMarkers(restaurants) {
 
     const marker = L.marker([lat, lon]).addTo(map);
     marker.bindPopup(`<b>${r.name}</b><br>${r.city || ""}`);
+
+    marker.on("click", () => {
+      openMenuForRestaurant(r);
+    });
+
     markers.push(marker);
   });
 }
@@ -257,16 +276,14 @@ async function toggleFavourite(restaurantId) {
 
   const index = favouriteRestaurantIds.indexOf(restaurantId);
   if (index >= 0) {
-    // poista listasta
     favouriteRestaurantIds.splice(index, 1);
   } else {
-    // lisää listaan
     favouriteRestaurantIds.push(restaurantId);
   }
 
   saveFavouritesToLocalStorage();
 
-  // synkataan backendille vain ENSIMMÄINEN suosikki (pääsuosikki)
+  // Synkkaa backendille yksi pääsuosikki (ensimmäinen listassa)
   const primaryFavourite =
     favouriteRestaurantIds.length > 0 ? favouriteRestaurantIds[0] : null;
 
@@ -291,7 +308,7 @@ async function toggleFavourite(restaurantId) {
     const updatedUser = data.data || data;
     localStorage.setItem("currentUser", JSON.stringify(updatedUser));
 
-    applyFilters(); // päivitä lista näkyviin
+    applyFilters();
   } catch (e) {
     console.error("Suosikin tallennus epäonnistui:", e);
   }
@@ -305,8 +322,8 @@ function renderRestaurantList(restaurants) {
 
   restaurants.forEach((restaurant) => {
     const li = document.createElement("li");
+    li.dataset.id = restaurant._id;
 
-    // Tähti
     const star = document.createElement("span");
     star.classList.add("star-icon");
     if (favouriteRestaurantIds.includes(restaurant._id)) {
@@ -342,27 +359,32 @@ function renderRestaurantList(restaurants) {
     li.appendChild(info);
 
     li.onclick = () => {
-      document
-        .querySelectorAll("#restaurant-list li")
-        .forEach((i) => i.classList.remove("active"));
-      li.classList.add("active");
-
-      selectedRestaurantId = restaurant._id;
-      if (!selectedRestaurantId) {
-        menuContentEl.textContent =
-          "Tälle ravintolalle ei löytynyt tunnistetta (_id).";
-        return;
-      }
-      loadMenu(selectedRestaurantId, selectedMenuType);
+      openMenuForRestaurant(restaurant);
     };
 
     restaurantListEl.appendChild(li);
   });
 }
 
+function highlightActiveRestaurantInList(id) {
+  document.querySelectorAll("#restaurant-list li").forEach((li) => {
+    li.classList.toggle("active", li.dataset.id === id);
+  });
+}
+
 // -----------------------
-// Ruokalistat
+// Ruokalista (vasemman sarakkeen paneeli)
 // -----------------------
+function openMenuForRestaurant(restaurant) {
+  selectedRestaurantId = restaurant._id;
+  if (!selectedRestaurantId) return;
+
+  highlightActiveRestaurantInList(selectedRestaurantId);
+  menuRestaurantTitleEl.textContent = restaurant.name || "Ruokalista";
+
+  loadMenu(selectedRestaurantId, selectedMenuType);
+}
+
 async function loadMenu(id, type) {
   const url =
     type === "day"

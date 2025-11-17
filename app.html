@@ -29,18 +29,18 @@
       </a>
 
       <!-- Käyttäjä-info -->
-      <div id="user-info" class="user-info" style="cursor: pointer;">
-        <div class="user-avatar" id="app-avatar">👤</div>
+      <div id="user-info" class="user-info">
+        <div class="user-avatar" id="header-avatar"></div>
         <div class="user-text">
           <span id="user-name">Käyttäjä</span>
-          <button id="logout-button" class="secondary-btn">
-            Uloskirjautuminen
+          <button id="logout-button" class="secondary-btn small-btn">
+            Kirjaudu ulos
           </button>
         </div>
       </div>
     </header>
 
-    <!-- Käyttäjä-info vie profiiliin -->
+    <!-- Klikkaamalla käyttäjäinfoa → profiilisivu -->
     <script>
       document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("user-info").onclick = () => {
@@ -51,7 +51,7 @@
 
     <main>
       <!-- FILTTERIT -->
-      <section id="filters" class="panel">
+      <section id="filters" class="panel glass">
         <h3>FILTTERIT</h3>
 
         <label for="filter-city">Kaupunki:</label>
@@ -65,37 +65,55 @@
         </select>
       </section>
 
-      <!-- PÄIVÄ / VIIKKO -->
-      <section id="view-selector">
-        <h2>Ruokalistat</h2>
-        <p>Valitse haluatko nähdä päivän vai viikon ruokalistan.</p>
-
-        <label>
-          <input type="radio" name="menu-type" value="day" checked />
-          Päivän ruokalista
-        </label>
-        <label>
-          <input type="radio" name="menu-type" value="week" />
-          Viikon ruokalista
-        </label>
+      <!-- INFO -->
+      <section id="view-selector" class="panel glass">
+        <h2>Ruokalistat kartalla</h2>
+        <p>
+          Valitse ravintola listasta tai kartalta. Ruokalista näkyy alla
+          ja voit vaihtaa näkymää päivän ja viikon välillä.
+        </p>
       </section>
 
-      <!-- RAVINTOLAT + MENU + KARTTA -->
+      <!-- SISÄLTÖ: vasen sarake (ravintolat + ruokalista), oikea sarake (kartta) -->
       <section id="content">
-        <div id="restaurants" class="panel">
-          <h3>Ravintolat</h3>
-          <ul id="restaurant-list"></ul>
-        </div>
+        <div id="left-column">
+          <div id="restaurants" class="panel glass">
+            <h3>Ravintolat</h3>
+            <ul id="restaurant-list"></ul>
+          </div>
 
-        <div id="menu" class="panel">
-          <h3>Ruokalista</h3>
-          <div id="menu-content">
-            Valitse ravintola listasta nähdäksesi ruokalistan.
+          <div id="menu-panel" class="panel glass">
+            <div class="menu-header">
+              <h3 id="menu-restaurant-title">Ruokalista</h3>
+
+              <div class="menu-type-toggle">
+                <label>
+                  <input
+                    type="radio"
+                    name="menu-type"
+                    value="day"
+                    checked
+                  />
+                  Päivä
+                </label>
+                <label>
+                  <input type="radio" name="menu-type" value="week" />
+                  Viikko
+                </label>
+              </div>
+            </div>
+
+            <div id="menu-content">
+              Valitse ravintola listasta tai kartalta nähdäksesi ruokalistan.
+            </div>
           </div>
         </div>
 
-        <div id="map-panel" class="panel">
+        <div id="map-panel" class="panel glass">
           <h3>Kartta</h3>
+          <p class="map-hint">
+            Klikkaa kartan merkkiä nähdäksesi valitun ravintolan ruokalistan.
+          </p>
           <div id="map"></div>
         </div>
       </section>

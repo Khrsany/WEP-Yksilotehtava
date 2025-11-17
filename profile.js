@@ -1,12 +1,15 @@
 /* ============================================================
-   PROFILE.JS — LOPULLINEN VERSIO (monen suosikin tuki)
+   PROFILE.JS — MODERNI VERSIO
+   ✔ Header-avatar sama kuin profiilikuva
+   ✔ Useita suosikkeja (localStorage + backendin pääsuosikki)
 =============================================================== */
 
-const API_BASE_URL = "https://media2.edu.metropolia.fi/restaurant/api/v1";
 const API_ROOT = "https://media2.edu.metropolia.fi/restaurant";
+const API_BASE_URL = `${API_ROOT}/api/v1`;
 
 // DOM
 const headerNameEl = document.getElementById("header-name");
+const headerAvatarEl = document.getElementById("header-avatar");
 const profileAvatarEl = document.getElementById("profile-avatar");
 
 const infoUsernameEl = document.getElementById("info-username");
@@ -51,7 +54,6 @@ document.addEventListener("DOMContentLoaded", () => {
     window.location.href = "login.html";
   };
 
-  // Moderni "Vaihda profiilikuva" -nappi
   avatarButton.addEventListener("click", () => {
     avatarInput.click();
   });
@@ -82,17 +84,14 @@ async function loadProfile() {
 
     headerNameEl.textContent = user.username || "Käyttäjä";
 
-    if (user.avatar) {
-      profileAvatarEl.src = `${API_ROOT}/uploads/${user.avatar}`;
-    } else {
-      profileAvatarEl.src = "https://via.placeholder.com/150?text=Avatar";
-    }
+    // Header-avatar + profiili-avatar
+    setAvatarImages(user);
 
     infoUsernameEl.textContent = user.username || "-";
     infoEmailEl.textContent = user.email || "-";
     infoIdEl.textContent = user._id || "-";
 
-    // Suosikkilista: ensin localStoragesta
+    // Suosikit localStoragesta
     let favouriteIds = [];
     try {
       favouriteIds = JSON.parse(
@@ -102,7 +101,6 @@ async function loadProfile() {
       favouriteIds = [];
     }
 
-    // jos ei löydy localStoragesta, käytä backendin yksittäistä suosikkia
     if (!favouriteIds.length && user.favouriteRestaurant) {
       favouriteIds = [user.favouriteRestaurant];
     }
@@ -120,8 +118,29 @@ async function loadProfile() {
   }
 }
 
+function setAvatarImages(user) {
+  if (user.avatar) {
+    const url = `${API_ROOT}/uploads/${user.avatar}`;
+    profileAvatarEl.src = url;
+    if (headerAvatarEl) {
+      headerAvatarEl.style.backgroundImage = `url(${url})`;
+      headerAvatarEl.textContent = "";
+    }
+  } else {
+    profileAvatarEl.src = "https://via.placeholder.com/150?text=Avatar";
+    if (headerAvatarEl) {
+      headerAvatarEl.style.backgroundImage = "";
+      if (user.username) {
+        headerAvatarEl.textContent = user.username[0].toUpperCase();
+      } else {
+        headerAvatarEl.textContent = "👤";
+      }
+    }
+  }
+}
+
 // --------------------
-// Useamman suosikin haku
+// Suosikkiravintolat
 // --------------------
 async function loadFavouriteRestaurants(ids) {
   favouriteListEl.innerHTML = "";
@@ -130,7 +149,6 @@ async function loadFavouriteRestaurants(ids) {
     try {
       const res = await fetch(`${API_BASE_URL}/restaurants/${id}`);
       const data = await res.json();
-
       if (!res.ok) continue;
 
       const r = data.data || data;
@@ -220,9 +238,7 @@ async function uploadAvatar(file) {
     }
 
     const user = data.data || data;
-    if (user.avatar) {
-      profileAvatarEl.src = `${API_ROOT}/uploads/${user.avatar}`;
-    }
+    setAvatarImages(user);
 
     const current = JSON.parse(localStorage.getItem("currentUser") || "{}");
     current.avatar = user.avatar;
