@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="fi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Opiskelijaravintolat – Kirjautuminen</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="login.js" defer></script>
+  </head>
+  <body class="auth-body">
+    <header class="simple-header">
+      <h1>OPISKELIJA-RAVINTOLAT</h1>
+    </header>
+
+    <main class="auth-main">
+      <section class="auth-card">
+        <h2>Kirjaudu sisään</h2>
+        <p class="auth-subtitle">
+          Kirjaudu sisään nähdäksesi opiskelijaravintolat ja ruokalistat.
+        </p>
+
+        <form id="login-form" class="auth-form">
+          <label for="login-username">Käyttäjänimi</label>
+          <input
+            type="text"
+            id="login-username"
+            name="login-username"
+            required
+          />
+
+          <label for="login-password">Salasana</label>
+          <input
+            type="password"
+            id="login-password"
+            name="login-password"
+            required
+          />
+
+          <button type="submit" class="primary-btn">Kirjaudu</button>
+        </form>
+
+        <p id="login-message" class="auth-message"></p>
+
+        <p class="auth-switch">
+          Eikö sinulla ole tiliä?
+          <a href="register.html">Luo uusi käyttäjä</a>
+        </p>
+      </section>
+    </main>
+
+    <footer class="simple-footer">

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="fi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Opiskelijaravintolat – Rekisteröinti</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="register.js" defer></script>
+  </head>
+  <body class="auth-body">
+    <header class="simple-header">
+      <h1>OPISKELIJA-RAVINTOLAT</h1>
+    </header>
+
+    <main class="auth-main">
+      <section class="auth-card">
+        <h2>Luo käyttäjä</h2>
+        <p class="auth-subtitle">
+          Rekisteröidy, jotta voit kirjautua sisään ja käyttää sovellusta.
+        </p>
+
+        <form id="register-form" class="auth-form">
+          <label for="register-username">Käyttäjänimi</label>
+          <input
+            type="text"
+            id="register-username"
+            name="register-username"
+            required
+          />
+
+          <label for="register-email">Sähköposti</label>
+          <input
+            type="email"
+            id="register-email"
+            name="register-email"
+            required
+          />
+
+          <label for="register-password">Salasana</label>
+          <input
+            type="password"
+            id="register-password"
+            name="register-password"
+            required
+          />
+
+          <button type="submit" class="primary-btn">Luo tili</button>
+        </form>
+
+        <p id="register-message" class="auth-message"></p>
+
+        <p class="auth-switch">
+          Onko sinulla jo tili?
+          <a href="login.html">Kirjaudu sisään</a>
+        </p>
+      </section>
+    </main>
+
+    <footer class="simple-footer">
+      <p>&copy; 2025 Opiskelijaravintolat -projekti</p>
+    </footer>
+  </body>
+</html>

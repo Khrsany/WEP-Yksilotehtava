@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="fi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Opiskelijaravintolat – Sovellus</title>
+    <link rel="stylesheet" href="style.css" />
+
+    <!-- Leaflet CSS -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet/dist/leaflet.css"
+    />
+
+    <!-- Leaflet JS -->
+    <script
+      src="https://unpkg.com/leaflet/dist/leaflet.js"
+      defer
+    ></script>
+
+    <script src="app.js" defer></script>
+  </head>
+
+  <body>
+    <header>
+      <!-- Logo / Etusivu-linkki -->
+      <a href="app.html" class="logo-link">
+        <h1>OPISKELIJA-RAVINTOLAT</h1>
+      </a>
+
+      <!-- Käyttäjä-info -->
+      <div id="user-info" class="user-info" style="cursor: pointer;">
+        <div class="user-avatar" id="app-avatar">👤</div>
+        <div class="user-text">
+          <span id="user-name">Käyttäjä</span>
+          <button id="logout-button" class="secondary-btn">
+            Uloskirjautuminen
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Käyttäjä-info vie profiiliin -->
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        document.getElementById("user-info").onclick = () => {
+          window.location.href = "profile.html";
+        };
+      });
+    </script>
+
+    <main>
+      <!-- FILTTERIT -->
+      <section id="filters" class="panel">
+        <h3>FILTTERIT</h3>
+
+        <label for="filter-city">Kaupunki:</label>
+        <select id="filter-city">
+          <option value="">Kaikki</option>
+        </select>
+
+        <label for="filter-company">Tarjoaja:</label>
+        <select id="filter-company">
+          <option value="">Kaikki</option>
+        </select>
+      </section>
+
+      <!-- PÄIVÄ / VIIKKO -->
+      <section id="view-selector">
+        <h2>Ruokalistat</h2>
+        <p>Valitse haluatko nähdä päivän vai viikon ruokalistan.</p>
+
+        <label>
+          <input type="radio" name="menu-type" value="day" checked />
+          Päivän ruokalista
+        </label>
+        <label>
+          <input type="radio" name="menu-type" value="week" />
+          Viikon ruokalista
+        </label>
+      </section>
+
+      <!-- RAVINTOLAT + MENU + KARTTA -->
+      <section id="content">
+        <div id="restaurants" class="panel">
+          <h3>Ravintolat</h3>
+          <ul id="restaurant-list"></ul>
+        </div>
+
+        <div id="menu" class="panel">
+          <h3>Ruokalista</h3>
+          <div id="menu-content">
+            Valitse ravintola listasta nähdäksesi ruokalistan.
+          </div>
+        </div>
+
+        <div id="map-panel" class="panel">
+          <h3>Kartta</h3>
+          <div id="map"></div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p>&copy; 2025 Opiskelijaravintolat -projekti</p>
+    </footer>
+  </body>
+</html>

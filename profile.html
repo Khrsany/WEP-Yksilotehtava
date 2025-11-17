@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="fi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profiili – Opiskelijaravintolat</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="profile.js" defer></script>
+  </head>
+
+  <body>
+    <!-- HEADER -->
+    <header>
+      <a href="app.html" class="logo-link">
+        <h1>OPISKELIJA-RAVINTOLAT</h1>
+      </a>
+
+      <div id="user-info" class="user-info">
+        <div class="user-avatar" id="header-avatar">👤</div>
+        <div class="user-text">
+          <span id="header-name">Käyttäjä</span>
+          <button id="logout-button" class="secondary-btn">
+            Uloskirjautuminen
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- MAIN -->
+    <main>
+      <section class="profile-section">
+        <h2>Käyttäjäprofiili</h2>
+        <p>
+          Tältä sivulta voit tarkastella ja muokata omia tietojasi, sekä lisätä
+          profiilikuvan. Näet myös suosikkiravintolasi.
+        </p>
+
+        <div class="profile-content">
+          <!-- PROFIILIKUVA -->
+          <div class="avatar-box">
+            <img
+              id="profile-avatar"
+              src="https://via.placeholder.com/150?text=Avatar"
+              alt="Profiilikuva"
+            />
+
+            <div class="avatar-upload">
+              <button
+                type="button"
+                id="avatar-button"
+                class="primary-btn"
+              >
+                Vaihda profiilikuva
+              </button>
+              <input
+                type="file"
+                id="avatar-input"
+                accept="image/*"
+                hidden
+              />
+            </div>
+          </div>
+
+          <!-- TIEDOT + SUOSIKIT -->
+          <div class="info-box">
+            <h3>Omat tiedot</h3>
+            <p><strong>Käyttäjänimi:</strong> <span id="info-username"></span></p>
+            <p><strong>Sähköposti:</strong> <span id="info-email"></span></p>
+            <p><strong>User ID:</strong> <span id="info-id"></span></p>
+
+            <h3>Suosikkiravintolat</h3>
+            <ul id="favourite-list">
+              <!-- JS lisää tänne kaikki suosikit -->
+            </ul>
+
+            <h3>Päivitä tietoja</h3>
+            <form id="update-form" class="auth-form">
+              <label for="update-email">Uusi sähköposti</label>
+              <input type="email" id="update-email" />
+
+              <label for="update-username">Uusi käyttäjänimi</label>
+              <input type="text" id="update-username" />
+
+              <label for="update-password">Uusi salasana</label>
+              <input type="password" id="update-password" />
+
+              <button type="submit" class="primary-btn">Tallenna</button>
+            </form>
+
+            <p id="profile-message" class="auth-message"></p>
+
+            <p style="margin-top: 12px; font-size: 0.9rem;">
+              <a href="app.html">← Takaisin sovellukseen</a>
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p>&copy; 2025 Opiskelijaravintolat -projekti</p>
+    </footer>
+  </body>
+</html>
