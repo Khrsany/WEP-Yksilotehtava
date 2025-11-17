@@ -1,0 +1,169 @@
+/* reset */
+body {
+  margin: 0%;
+  font-family: "Poppins", sans-serif;
+  background-color: #fafafa;
+  color: #333333;
+}
+
+/* Header and navigation */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #d4af37; /* kulta */
+  color: white;
+  padding: 15px 30px;
+}
+
+header h1 {
+  font-size: 1.6rem;
+  margin: 0;
+}
+
+nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 20px;
+}
+
+nav a {
+  text-decoration: none;
+  color: white;
+  font-weight: 500;
+  transition: color 0.3s;
+}
+
+nav a:hover {
+  color: #e0e0e0; /* hopeaefekti hoverissa */
+}
+
+/* Main content */
+main {
+  padding: 40px 20px;
+  background-color: #fafafa;
+  min-height: 70vh;
+}
+
+section {
+  max-width: 800px;
+  margin: 0 auto;
+  background-color: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  color: #d4af37;
+  margin-top: 0;
+}
+
+/* Footer */
+footer {
+  background-color: #333;
+  color: #e0e0e0;
+  text-align: center;
+  padding: 1px 0;
+  font-size: 10px;
+}
+
+/* Responsive design */
+@media (max-width: 600px) {
+  header {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  nav ul {
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 10px;
+  }
+
+  section {
+    padding: 15px;
+  }
+}
+
+/* View selector */
+#view-selector {
+  max-width: 800px;
+  margin: 20px auto;
+  background-color: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.menu-toggle {
+  margin-top: 10px;
+  display: flex;
+  gap: 20px;
+}
+
+/* Content layout: ravintolat + ruokalista */
+#content {
+  max-width: 1100px;
+  margin: 20px auto;
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.panel {
+  flex: 1 1 300px;
+  background-color: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Ravintolalista */
+#restaurant-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+#restaurant-list li {
+  padding: 10px;
+  border-bottom: 1px solid #f0f0f0;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+#restaurant-list li:hover {
+  background-color: #f7f7f7;
+}
+
+#restaurant-list li.active {
+  background-color: #fff7d6;
+}
+
+/* Menu content */
+#menu-content {
+  white-space: pre-line; /* rivinvaihdot näkyviin jos saadaan tekstinä */
+}
+
+/* Pieni parannus yhteystieto-osioon */
+#contact {
+  max-width: 800px;
+  margin: 20px auto 40px;
+  background-color: white;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+  padding: 20px;
+}
+
+/* Responsiivisuus */
+@media (max-width: 800px) {
+  #content {
+    flex-direction: column;
+  }
+}
